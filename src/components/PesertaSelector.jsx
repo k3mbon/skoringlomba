@@ -1,29 +1,28 @@
-// DropdownComponent.js
+// components/AudienceSelector.js
 import React, { useState, useEffect } from 'react';
 import sanityClient from '../sanityClient';
-import { useAuth } from '../AuthContext'
 import ScoreAssignment from './ScoreAssignment';
 
-const DropdownComponent = () => {
-  const [data, setData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState('');
+const PesertaSelector = ({ onSelectPeserta }) => {
+  const [peserta, setPeserta] = useState([]);
+  const [selectedPeserta, setSelectedPeserta] = useState('');
   const [rubrik, setRubrik] = useState([]);
-  
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPeserta = async () => {
       try {
+        // Fetch the list of Peserta from Sanity
         const result = await sanityClient.fetch('*[_type == "peserta"]');
-        setData(result);
+        setPeserta(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching Peserta from Sanity:', error.message);
       }
     };
 
-    fetchData();
+    fetchPeserta();
   }, []);
 
-  // Example query to fetch a list of documents
-const query = '*[_type == "rubrik"]';
+  const query = '*[_type == "rubrik"]';
 
 // Fetch the data
 const fetchRubrik = async () => {
@@ -50,25 +49,24 @@ useEffect(() => {
 
   return (
     <div>
-      <h2>Pilih Daftar Peserta</h2>
       <label>
-        Pilih Peserta:
-        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
-          <option value="">-- Select --</option>
-          {data.map(item => (
-            <option key={item._id} value={item._id}>
-              {item.nomorpeserta} 
+        Select Peserta:
+        <select value={selectedPeserta} onChange={(e) => setSelectedPeserta(e.target.value)}>
+          <option value="">Peserta</option>
+          {peserta.map((peserta) => (
+            <option key={peserta._id} value={peserta._id}>
+              {peserta.nomorpeserta}
             </option>
           ))}
         </select>
       </label>
 
-      {selectedItem && (
+      {selectedPeserta && (
         <div>
           <h3>Selected Item Details:</h3>
           {/* Display details of the selected item here */}
-          <p>Name: {data.find(item => item._id === selectedItem)?.namapeserta}</p>
-          <p>Nomor Peserta: {data.find(item => item._id === selectedItem)?.nomorpeserta}</p>
+          <p>Name: {peserta.find(item => item._id === selectedPeserta)?.namapeserta}</p>
+          <p>Nomor Peserta: {peserta.find(item => item._id === selectedPeserta)?.nomorpeserta}</p>
           {/*<button onClick={handleModifyData}>Input Score</button>*/}
           <h3>Isi Rubrik</h3>
             
@@ -88,4 +86,4 @@ useEffect(() => {
   );
 };
 
-export default DropdownComponent;
+export default PesertaSelector;

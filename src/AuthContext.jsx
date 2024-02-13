@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [juri, setUser] = useState(null);
 
   const login = (userData) => {
     // You can perform any necessary login logic here, e.g., setting user data in the context

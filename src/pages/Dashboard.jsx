@@ -2,10 +2,22 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from '../components/Dropdown'
 import { useNavigate } from 'react-router-dom';
 import sanityClient from '../sanityClient';
+import JuriSelector from '../components/JuriSelector';
+import PesertaSelector from '../components/PesertaSelector';
+import ScoreAssignment from '../components/ScoreAssignment';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [selectedJuri, setSelectedJuri] = useState('');
+  const [selectedPeserta, setSelectedPeserta] = useState('');
+  const handleJuriSelection = (juriId) => {
+    setSelectedJuri(juriId);
+  };
+
+  const handlePesertaSelection = (pesertaId) => {
+    setSelectedPeserta(pesertaId);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -29,10 +41,18 @@ const Dashboard = () => {
     // For simplicity, we'll just navigate to the login page
     navigate('/login');
   };
+
+  
+
+
   return (
     <div>
-      <h2>Welcome {user ? user.displayname : 'Guest'}!</h2>
-      <Dropdown/>
+      <h2>Welcome {user ? user.nama : 'Guest'}!</h2>
+      <JuriSelector onSelectJuri={handleJuriSelection} />
+        <PesertaSelector onSelectPeserta={handlePesertaSelection} />
+        {selectedJuri && selectedPeserta && (
+          <ScoreAssignment juriId={selectedJuri} pesertaId={selectedPeserta} />
+        )}
       <button onClick={handleLogout}>Logout</button>
     </div>
   )

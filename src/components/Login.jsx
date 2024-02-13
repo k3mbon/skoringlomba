@@ -12,7 +12,7 @@ const Login = () => {
     try {
       // Replace 'your_user_type' with the actual type from your Sanity.io schema
       const user = await sanityClient
-        .fetch(`*[_type == 'admin' && username == $username && password == $password][0]`, {
+        .fetch(`*[_type == 'juri' && username == $username && password == $password][0]`, {
           username,
           password,
         });

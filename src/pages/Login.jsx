@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import sanityClient from '../sanityClient';
 
 const Login = () => {
-  const [email, setemail] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -12,8 +12,8 @@ const Login = () => {
     try {
       // admin = backend schema field
       const user = await sanityClient
-        .fetch(`*[_type == 'juri' && email == $email && password == $password][0]`, {
-          email,
+        .fetch(`*[_type == 'juri' && username == $username && password == $password][0]`, {
+          username,
           password,
         });
 
@@ -35,8 +35,8 @@ const Login = () => {
       <input
         type="text"
         placeholder="Username"
-        value={email}
-        onChange={(e) => setemail(e.target.value)}
+        value={username}
+        onChange={(e) => setusername(e.target.value)}
       />
       <input
         type="password"
